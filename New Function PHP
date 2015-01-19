@@ -1,0 +1,35 @@
+//Quotation Junction integration by Joe Hatch
+//add hook to carry out action after form submission and post to QJ
+add_action('gform_after_submission', 'post_to_qj', 10, 2);
+
+//write function to post to QJ using $entry = entry just created from $form = current form (quotation form)
+function post_to_qj($entry, $form) {
+    
+    //sent to QJ's import api
+    $post_url = 'https://quotationjunction.com/qimport';
+
+    //rebuild content to be sent to QJ 
+    $body = array(
+
+ 	//this affiliate ID remains the same for 'inspiredfranking'
+        'affiliate_id' => '5244', 
+    //this category ID remains the same for 'inspiredfranking'
+        'category_id' => '6', 
+    //dynamically populate QJ's 'email' field with GF_field_11 (Email)
+        'email' => $entry['11'],
+    //dynamically populate QJ's 'postcode' field with GF_field_12 (Post Code)
+        'postcode' => $entry['12'], 
+    //dynamically populate QJ's 'first_name' field with GF_field_8 (First Name)
+        'first_name' => $entry['8'], 
+    //dynamically populate QJ's 'last_name' field with GF_field_9 (Last name)
+        'last_name' => $entry['9'],
+    //dynamically populate QJ's 'company' field with GF_field_10 (Company Name)
+        'company' => $entry['10'],
+    //dynamically populate QJ's 'phone' field with GF_field_13 (Phone Number)
+        'phone' => $entry['13'], 
+        );
+    
+    $request = new WP_Http();
+    $response = $request->post($post_url, array('body' => $body));
+    
+}

@@ -1,0 +1,23 @@
+$ch = curl_init('https://quotationjunction.com/qimport');
+//uncomment this if any problems with SSL certificate authentication
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+//curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+curl_setopt($ch, CURLOPT_POST, 1);
+
+//to receive the response data into string variable
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+
+curl_setopt($ch, CURLOPT_POSTFIELDS, 
+    "affiliate_id=5244&" .            //QJ affiliate id
+    "category_id=6&" .              //QJ category id 
+    "email=test@test.com&" .        //client email
+    "postcode=RG42 1BS&" .          //client postcode - may be no spaces
+    "name=John Doe&" .              //client name
+    "company=Private Drinks LLC&" . //client company name
+    "address=123 20fake 20road&" .  //client address
+    "phone= 050 123 45 5555&" .     //client phone - digits and spaces allowed
+    "description=some sort of description goes here. it's a test description&" .    //client quote description
+    "send=0");                      //if the post is for test send=0, set it as send=1 for the real quotes
+
+$data = curl_exec($ch);
+curl_close($ch);

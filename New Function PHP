@@ -25,4 +25,4 @@ add_action("gform_after_submission", "backup_email", 10, 2);
  $message = print_r($entry, true);
  $message = wordwrap($message, 70);
  mail('kirsty.mills@quotationjunction.com', 'Manual InspiredFranking Lead Notification by JoeHatch', $message);
- }
+}

@@ -12,6 +12,8 @@ function post_to_qj($entry, $form) {
         'company' => $entry['10'],
         'phone' => $entry['13'], 
         'send' => '1',
+        //Anything here will go into field 5?
+        //'fieldID' => 'value',
         );
     $request = new WP_Http();
     $response = $request->post($post_url, array('body' => $body));

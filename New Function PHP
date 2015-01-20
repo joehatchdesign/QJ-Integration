@@ -19,3 +19,10 @@ function post_to_qj($entry, $form) {
     $response = $request->post($post_url, array('body' => $body));
     
 }
+
+add_action("gform_after_submission", "backup_email", 10, 2);
+ function backup_email($entry, $form){ 
+ $message = print_r($entry, true);
+ $message = wordwrap($message, 70);
+ mail('kirsty.mills@quotationjunction.com', 'Manual InspiredFranking Lead Notification by JoeHatch', $message);
+ }

@@ -3,17 +3,9 @@ add_action('gform_after_submission', 'post_to_qj', 10, 2);
 function post_to_qj($entry, $form) {
     $post_url = 'https://quotationjunction.com/qimport';
     $body = array(
-        'affiliate_id' => '5244', 
-        'category_id' => '6', 
-        'email' => $entry['11'],
-        'postcode' => $entry['12'], 
-        'first_name' => $entry['8'], 
-        'last_name' => $entry['9'],
-        'company' => $entry['10'],
-        'phone' => $entry['13'], 
-        'send' => '1',
-        //Anything here will go into field 5?
-        //'fieldID' => 'value',
+        'affiliate_id' => 'id_goes_here', 
+        'category_id' => 'id_goes_here', 
+        'field_id' => $entry['entry_goes_here'],
         );
     $request = new WP_Http();
     $response = $request->post($post_url, array('body' => $body));

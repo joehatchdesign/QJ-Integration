@@ -37,3 +37,53 @@ $xml_data .= "</lead></data>";
      curl_close($ch);
 	
 }
+
+
+
+---- 
+
+
+add_action('gform_after_submission', 'post_to_flg360', 10, 2);
+function post_to_flg360($entry, $form) {
+     
+//opening xml tag
+     $xml_data = '<?xml version="1.0" encoding="UTF-8"?>
+<data>
+ <lead>
+ <key>LgaPXbw020IVKoutAk5Xw5aMnwCziWb1</key>
+ <leadgroup>47432</leadgroup>
+ <site>15938</site>
+ <introducer>43956</introducer>
+ <reference></reference>';
+ 
+		
+		$xml_data .= '<firstname>' . $entry[1] . '</firstname>';		
+		$xml_data .= '<lastname>' . $entry[2] . '</lastname>';	
+		$xml_data .= '<comapny>' . $entry[3] . '</company>';	
+		$xml_data .= '<phone1>' . $entry[4] . '</phone1>';	
+		$xml_data .= '<email>' . $entry[5] . '</email>';	
+		$xml_data .= '<postcode>' . $entry[6] . '</postcode>';	
+		$xml_data .= '<data1>' . $entry[7] . '</data1>';	
+		$xml_data .= '<data3>' . $entry[8] . '</data3>';	
+		$xml_data .= '<data4>' . $entry[9] . '</data4>';	
+		$xml_data .= '<data5>' . $entry[10] . '</data5>';	
+
+//closing xml tag
+$xml_data .= "</lead></data>";
+
+     $URL = "http://inspire.flg360.co.uk/api/APILeadCreateUpdate.php";
+     $ch = curl_init($URL);
+     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+     curl_setopt($ch, CURLOPT_POST, 1);
+     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
+     curl_setopt($ch, CURLOPT_POSTFIELDS, $xml_data);
+     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+     $output = curl_exec($ch);
+     curl_close($ch);
+
+file_put_contents(ABSPATH . "request.txt", $xml_data);
+file_put_contents(ABSPATH . "response.txt", $output);
+	
+}

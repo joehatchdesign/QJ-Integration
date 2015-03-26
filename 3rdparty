@@ -1,0 +1,39 @@
+add_action('gform_after_submission', 'post_to_flg360', 10, 2);
+function post_to_flg360($entry, $form) {
+     
+//opening xml tag
+     $xml_data = '<?xml version="1.0" encoding="UTF-8"?>
+<data>
+ <lead>
+ <key> XXXXXXXXXXXXXXXXX</key>
+ <leadgroup> XXXX </leadgroup>
+ <site> XXXXX </site>
+ <introducer> XXXXX </introducer>
+ <reference></reference>';
+ 
+	if ( !empty($entry[0]) ) {
+		
+		$xml_data .= '<title>' . $entry[0] . '</title>';		
+		
+	}
+	if ( !empty($entry[1]) ) {
+		
+		$xml_data .= '<source>' . $entry[1] . '</source>';
+	
+	}
+//closing xml tag
+$xml_data .= "</lead></data>";
+
+     $URL = " URL ";
+     $ch = curl_init($URL);
+     curl_setopt($ch, CURLOPT_MUTE, 1);
+     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+     curl_setopt($ch, CURLOPT_POST, 1);
+     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
+     curl_setopt($ch, CURLOPT_POSTFIELDS, $xml_data);
+     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+     $output = curl_exec($ch);
+     curl_close($ch);
+	
+}
